@@ -1,0 +1,13 @@
+node_modules/
+dist/
+coverage/
+.worktrees/
+data/
+demo-data/
+.qa/
+*.log
+.env
+.env.*
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm

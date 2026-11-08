@@ -1,0 +1,17 @@
+export type Criterion = { id: string; label: string; kind: 'human' | 'nonempty' | 'contains'; slot: string; pattern?: string };
+export type Dependency = { goalId: string; revision: number; acceptanceId: string };
+export type Goal = { id: string; head: number; revision: number; title: string; description: string; slots: string[]; criteria: Criterion[]; dependencies: Dependency[]; currentManifestId?: string; createdAt: string; updatedAt: string };
+export type Service = { id: string; name: string; model: string; access: 'manual'; createdAt: string };
+export type Attempt = { id: string; goalId: string; goalRevision: number; serviceId: string; serviceName: string; model: string; instructions: string; createdAt: string };
+export type Artifact = { id: string; goalId: string; goalRevision: number; attemptId: string; slot: string; name: string; mediaType: string; sha256: string; size: number; source: 'manual-relay'; createdAt: string };
+export type Manifest = { id: string; goalId: string; goalRevision: number; outputs: Record<string, string>; createdAt: string };
+export type Assessment = { id: string; goalId: string; goalRevision: number; manifestId: string; criterionId: string; verdict: 'pass' | 'fail'; method: 'human' | 'deterministic'; note: string; supersedes?: string; createdAt: string };
+export type Acceptance = { id: string; goalId: string; goalRevision: number; manifestId: string; assessmentIds: string[]; dependencies: Dependency[]; createdAt: string };
+export type ResourceObservation = { id: string; attemptId: string; amount: number | null; currency: string; source: 'declared'; note: string; replaces?: string; createdAt: string };
+export type JournalEvent = { seq: number; id: string; type: string; data: unknown; createdAt: string; commandId: string };
+export type State = { schemaVersion: 'opencorral/v1'; goals: Goal[]; services: Service[]; attempts: Attempt[]; artifacts: Artifact[]; manifests: Manifest[]; assessments: Assessment[]; acceptances: Acceptance[]; resources: ResourceObservation[]; journalCount: number };
+export type Blocker = { code: string; message: string; criterionId?: string };
+export type GoalView = Goal & { status: 'draft' | 'in_progress' | 'needs_review' | 'blocked' | 'accepted' | 'stale'; blockers: Blocker[]; costs: Record<string, number>; unknownCosts: number; attemptCount: number; artifactCount: number };
+export type Snapshot = Omit<State, 'goals'> & { goals: GoalView[] };
+export type Command = { commandId: string; type: 'createGoal' | 'reviseGoal' | 'registerService' | 'issueAttempt' | 'importContribution' | 'recordCost' | 'runChecks' | 'recordJudgment' | 'acceptResult'; payload: Record<string, unknown> };
+export type CommandResult = { id?: string; goalId?: string; artifactId?: string; manifestId?: string; assessmentIds?: string[]; acceptanceId?: string; revision?: number; head?: number };

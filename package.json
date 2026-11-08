@@ -1,0 +1,19 @@
+{
+  "name": "opencorral",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "A local station for objectives, contributions and evidence.",
+  "engines": { "node": ">=24.14.1 <25" },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "start": "node apps/core/server.ts",
+    "dev": "npm run build && npm start",
+    "check": "tsc --noEmit",
+    "test": "node --test tests/*.test.ts",
+    "conformance": "node scripts/conformance.mjs",
+    "demo": "node scripts/demo.mjs"
+  },
+  "license": "Apache-2.0",
+  "devDependencies": { "@types/node": "24.10.1", "typescript": "5.9.3" }
+}
